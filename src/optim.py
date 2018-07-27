@@ -12,8 +12,9 @@ class SDG(object):
 
         self.lr = base_lr
 
-
     def step(self, grads):
+        aa = self.model.params['l1_weight']
         for key, value in self.model.params.items():
-            self.model.params[key] -= self.lr * grads[key]
-
+            self.model.params[key] = value - self.lr * grads[key]
+        bb = self.model.params['l1_weight']
+        print(np.sum(aa-bb))

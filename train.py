@@ -15,19 +15,20 @@ def train():
     val_lables = data['test_labels']
 
     model = resnet()
-    optimizer = optim.SDG(model, base_lr=1)
+    # optimizer = optim.SDG(model, base_lr=1e-3)
 
     import numpy as np
 
     for i in range(100):
 
-        samples_batch = (np.array(train_samples[i*cfg['batch_size']:(i+1)*cfg['batch_size']]).astype(np.float32) - 127.5)/2
+        samples_batch = (np.array(train_samples[i*cfg['batch_size']:(i+1)*cfg['batch_size']]).astype(np.float32))/2.0 - 127.5
+        # samples_batch = np.array(train_samples[i*cfg['batch_size']:(i+1)*cfg['batch_size']]).astype(np.float32) / 255.0
         labels_batch = train_labels[i*cfg['batch_size']:(i+1)*cfg['batch_size']]
 
         outputs = model.forward(samples_batch)
         loss = model.compute_loss(labels_batch)
         grads = model.backward()
-        optimizer.step(grads)
+        # optimizer.step(grads)
 
 if __name__ == '__main__':
     train()
