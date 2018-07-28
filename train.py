@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import src.optim as optim
 from val import val
+from src.lr_scheduler import MultiStepLR
+import src.optim as optim
 from src.symbol import get_symbol
 from src.args import get_args
 from src.logger import setup_logger
@@ -10,7 +11,7 @@ from src.data_loader import mnist
 from src.configuration import cfg_list
 from src.utils import check_dir_exists, save_weights, load_weights
 
-def train(model, optimizer, dataset, cfg, val_dataset=None):
+def train(model, optimizer, scheduler, dataset, cfg, val_dataset=None):
 
     for epoch in range(cfg['max_epoch']):
         for index, (inputs, label) in enumerate(dataset):
@@ -19,7 +20,9 @@ def train(model, optimizer, dataset, cfg, val_dataset=None):
             grads = model.backward()
             optimizer.step(grads)
 
-            logging.info("[%d/%d] train loss: %.4f, reg loss: %.4f, total: %.2f" %(epoch, index, loss, reg_loss, (loss + reg_loss)))
+            logging.info("[%d/%d] train loss: %.4f, reg loss: %.4f, total: %.2f || lr: %.4f" %(epoch, index, loss, reg_loss, (loss + reg_loss), optimizer.lr))
+
+        scheduler.step()
 
         params_path = save_weights(model.params, cfg['workspace'], model.name, epoch)
         logging.info("save model at: %s" % (params_path))
@@ -38,4 +41,5 @@ if __name__ == '__main__':
     val_dataset = mnist('test', cfg['batch_size'])
     model = get_symbol(cfg['symbol'])()
     optimizer = optim.SGD(model, cfg)
-    train(model, optimizer, train_dataset, cfg, val_dataset)
+    scheduler = MultiStepLR(optimizer, cfg['milestones'], cfg['gamma'])
+    train(model, optimizer, scheduler, train_dataset, cfg, val_dataset)
