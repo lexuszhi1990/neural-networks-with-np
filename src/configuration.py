@@ -2,7 +2,7 @@ from collections import defaultdict
 
 cfg = defaultdict(set)
 
-cfg['workspace'] = './ckpt/mlp-v1'
+cfg['workspace'] = './ckpt/mlp-v2'
 
 cfg['data_path'] = './data/mnist'
 cfg['batch_size'] = 5000

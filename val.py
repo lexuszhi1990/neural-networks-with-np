@@ -2,16 +2,15 @@
 
 import logging
 import numpy as np
-from src.data_loader import mnist
-from src.utils import check_dir_exists, load_weights
+from src.symbol import get_symbol
 from src.logger import setup_logger
 from src.configuration import cfg
-
-from src.symbol.mlp import mlp
+from src.data_loader import mnist
+from src.utils import check_dir_exists, restore_weights
 
 def val(model, model_name, params_path, dataset):
     if model is None:
-        model = mlp()
+        model = get_symbol(model_name)()
         restore_weights(model, params_path)
 
     err_num = 0

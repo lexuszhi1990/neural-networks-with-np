@@ -33,7 +33,8 @@ def load_weights(path):
 
     return weights
 
-def restore_weights(model, weights):
+def restore_weights(model, params_path):
+    weights = load_weights(params_path)
     for key in model.params.keys():
         model.params[key] = weights[key]
 

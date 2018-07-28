@@ -2,14 +2,15 @@
 
 
 import logging
+from src.symbol import get_symbol
 import src.optim as optim
-from val import val
 from src.configuration import cfg
 from src.data_loader import mnist
 from src.symbol.resnet import resnet
 from src.symbol.mlp import mlp
 from src.logger import setup_logger
 from src.utils import check_dir_exists, save_weights, load_weights
+from val import val
 
 def train(model, optimizer, dataset, cfg, val_dataset=None):
 
@@ -24,7 +25,8 @@ def train(model, optimizer, dataset, cfg, val_dataset=None):
 
         params_path = save_weights(model.params, cfg['workspace'], model.name, epoch)
         logging.info("save model at: %s" % (params_path))
-        val(None, model.name, params_path, val_dataset, cfg)
+        if val_dataset is not None:
+            val(None, model.name, params_path, val_dataset)
 
 if __name__ == '__main__':
 
@@ -34,6 +36,6 @@ if __name__ == '__main__':
 
     train_dataset = mnist('train', cfg['batch_size'], data_path=cfg['data_path'])
     val_dataset = mnist('train', cfg['batch_size'], data_path=cfg['data_path'])
-    model = mlp()
+    model = get_symbol('mlp')()
     optimizer = optim.SGD(model, cfg)
     train(model, optimizer, train_dataset, cfg, val_dataset)
