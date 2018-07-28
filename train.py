@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 import logging
 from src.symbol import get_symbol
 import src.optim as optim
@@ -26,13 +25,12 @@ def train(model, optimizer, dataset, cfg, val_dataset=None):
         params_path = save_weights(model.params, cfg['workspace'], model.name, epoch)
         logging.info("save model at: %s" % (params_path))
         if val_dataset is not None:
-            val(None, model.name, params_path, val_dataset)
+            val(model, model.name, params_path, val_dataset)
 
 if __name__ == '__main__':
 
     check_dir_exists(cfg['workspace'])
     setup_logger("%s/training" % cfg['workspace'])
-
 
     train_dataset = mnist('train', cfg['batch_size'], data_path=cfg['data_path'])
     val_dataset = mnist('train', cfg['batch_size'], data_path=cfg['data_path'])
