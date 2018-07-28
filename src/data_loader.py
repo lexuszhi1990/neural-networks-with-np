@@ -13,21 +13,19 @@ imageset = {
 }
 
 class mnist(object):
-    def __init__(self, type='train', batch_size=5000, data_path=None, cfg=None):
+    def __init__(self, imageset='train', batch_size=1000, data_path=None):
 
-        self.type = type
+        data_path = default_data_path if data_path is None else data_path
+
+        self.imageset = imageset
         self.batch_size = batch_size
-        if data_path is None:
-            data_path = default_data_path
-        self.data_path = data_path
-
-        self.inputs, self.labels = self.load_dataset()
+        self.inputs, self.labels = self.load_dataset(data_path)
         self.max_iteration = len(self.labels) / batch_size
         self.anchor = 0
 
-    def load_dataset(self):
-        sample_path = Path(self.data_path, imageset["%s_images" % self.type])
-        label_path = Path(self.data_path, imageset["%s_labels" % self.type])
+    def load_dataset(self, data_path):
+        sample_path = Path(data_path, imageset["%s_images" % self.imageset])
+        label_path = Path(data_path, imageset["%s_labels" % self.imageset])
         assert sample_path.exists(), "%s not exists" % sample_path
         assert label_path.exists(), "%s not exists" % label_path
 
@@ -41,15 +39,14 @@ class mnist(object):
 
     def reset(self):
         self.anchor = 0
-        # TODO: shuffle the dataset
+        shuffled_ids = [i for i in range(len(self.inputs))]
+        self.inputs = self.inputs[shuffled_ids]
+        self.labels = self.labels[shuffled_ids]
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        # samples_batch = np.array(train_samples[i*cfg['batch_size']:(i+1)*cfg['batch_size']]).astype(np.float32) / 255.0
-        # samples_batch = (np.array(train_samples[i*cfg['batch_size']:(i+1)*cfg['batch_size']]).astype(np.float32))/2.0 - 127.5
-
         inputs_batch = self.inputs[self.anchor*self.batch_size:(self.anchor+1)*self.batch_size].astype(np.float32)
         labels_batch = self.labels[self.anchor*self.batch_size:(self.anchor+1)*self.batch_size]
 
@@ -61,6 +58,4 @@ class mnist(object):
 
 if __name__ == '__main__':
     dataset = mnist()
-    for i,j in dataset:
-        import pdb
-        pdb.set_trace()
+    dataset.reset()
