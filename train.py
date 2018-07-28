@@ -20,7 +20,7 @@ def train(model, optimizer, scheduler, dataset, cfg, val_dataset=None):
             grads = model.backward()
             optimizer.step(grads)
 
-            logging.info("[%d/%d] train loss: %.4f, reg loss: %.4f, total: %.2f || lr: %.4f" %(epoch, index, loss, reg_loss, (loss + reg_loss), optimizer.lr))
+            logging.info("[%d/%d] train loss: %.2f, reg loss: %.2f, total: %.4f || lr: %.6f" %(epoch, index, loss, reg_loss, (loss + reg_loss), optimizer.lr))
 
         scheduler.step()
 
