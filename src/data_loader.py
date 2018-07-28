@@ -23,6 +23,12 @@ class mnist(object):
         self.max_iteration = len(self.labels) // batch_size
         self.anchor = 0
 
+    def name(self):
+        return "mnist-%s" % self.imageset
+
+    def is_training(self):
+        return self.imageset == 'train'
+
     def load_dataset(self, data_path):
         sample_path = Path(data_path, imageset["%s_images" % self.imageset])
         label_path = Path(data_path, imageset["%s_labels" % self.imageset])
@@ -39,10 +45,10 @@ class mnist(object):
 
     def reset(self):
         self.anchor = 0
-        shuffled_ids = [i for i in range(len(self.inputs))]
-        self.inputs = self.inputs[shuffled_ids]
-        self.labels = self.labels[shuffled_ids]
-        print("shuffle datasets...")
+        if self.is_training():
+            shuffled_ids = [i for i in range(len(self.inputs))]
+            self.inputs = self.inputs[shuffled_ids]
+            self.labels = self.labels[shuffled_ids]
 
     def __iter__(self):
         return self
