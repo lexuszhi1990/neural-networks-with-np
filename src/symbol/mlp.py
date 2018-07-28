@@ -41,7 +41,7 @@ class mlp(object):
 
     def compute_loss(self, labels_batch):
         training_loss, self.d_output = softmax_loss(self.output, labels_batch)
-        reg_loss = 0.5 * self.reg * (np.sum(self.params['l1_weight'] ** 2) + np.sum(self.params['l2_weight'] ** 2))
+        reg_loss = 0.5 * self.reg * (np.sum(self.params['l1_weight'] ** 2) + np.sum(self.params['l2_weight'] ** 2) + np.sum(self.params['l3_weight'] ** 2))
 
         return training_loss, reg_loss
 
