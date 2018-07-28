@@ -4,7 +4,6 @@ import numpy as np
 import gzip
 from pathlib import Path
 
-default_data_path = './data/mnist'
 imageset = {
     "train_images": "train-images-idx3-ubyte.gz",
     "train_labels": "train-labels-idx1-ubyte.gz",
@@ -13,18 +12,17 @@ imageset = {
 }
 
 class mnist(object):
-    def __init__(self, imageset='train', batch_size=1000, data_path=None):
+    def __init__(self, imageset='train', batch_size=1000, name='mnist', root_path='./data'):
 
-        data_path = default_data_path if data_path is None else data_path
+        data_path = Path(root_path, name)
+        assert imageset in ['train', 'test'], "%s not exists" % imageset
 
+        self.name = name
         self.imageset = imageset
         self.batch_size = batch_size
         self.inputs, self.labels = self.load_dataset(data_path)
         self.max_iteration = len(self.labels) // batch_size
         self.anchor = 0
-
-    def name(self):
-        return "mnist-%s" % self.imageset
 
     def is_training(self):
         return self.imageset == 'train'

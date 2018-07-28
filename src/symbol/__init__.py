@@ -1,8 +1,10 @@
 from src.symbol.mlp import mlp
+from src.symbol.alexnet import alexnet
 from src.symbol.resnet import resnet
 
 symbol_list = {
     'mlp': mlp,
+    'alexnet': alexnet,
     'resnet': resnet,
 }
 

@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from src.symbol import get_symbol
 import src.optim as optim
-from src.configuration import cfg
-from src.data_loader import mnist
-from src.symbol.resnet import resnet
-from src.symbol.mlp import mlp
-from src.logger import setup_logger
-from src.utils import check_dir_exists, save_weights, load_weights
 from val import val
+from src.symbol import get_symbol
+from src.args import get_args
+from src.logger import setup_logger
+from src.data_loader import mnist
+from src.configuration import cfg_list
+from src.utils import check_dir_exists, save_weights, load_weights
 
 def train(model, optimizer, dataset, cfg, val_dataset=None):
 
@@ -29,11 +28,14 @@ def train(model, optimizer, dataset, cfg, val_dataset=None):
 
 if __name__ == '__main__':
 
+    args = get_args()
+    cfg = cfg_list[args.config_id]
+
     check_dir_exists(cfg['workspace'])
     setup_logger("%s/training" % cfg['workspace'])
 
-    train_dataset = mnist('train', cfg['batch_size'], data_path=cfg['data_path'])
-    val_dataset = mnist('train', cfg['batch_size'], data_path=cfg['data_path'])
-    model = get_symbol('mlp')()
+    train_dataset = mnist('train', cfg['batch_size'])
+    val_dataset = mnist('test', cfg['batch_size'])
+    model = get_symbol(cfg['symbol'])()
     optimizer = optim.SGD(model, cfg)
     train(model, optimizer, train_dataset, cfg, val_dataset)

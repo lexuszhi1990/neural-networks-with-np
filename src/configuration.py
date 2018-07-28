@@ -1,12 +1,14 @@
 from collections import defaultdict
 
-cfg = defaultdict(set)
+cfg_list = defaultdict(set)
 
-cfg['workspace'] = './ckpt/mlp-v2'
-
-cfg['data_path'] = './data/mnist'
-cfg['batch_size'] = 5000
-cfg['max_epoch'] = 100
-
-cfg['base_lr'] = 1e-3
-cfg['momentum'] = 0.9
+cfg_list['mlp'] = {
+    'workspace': './ckpt/mlp-v2',
+    'symbol': 'mlp',
+    'batch_size': 5000,
+    'max_epoch': 100,
+    'milestones': [ i*10 for i in range(1, 100//10) ],
+    'gamma': 0.75,
+    'base_lr': 1e-3,
+    'momentum': 0.9,
+}
