@@ -13,7 +13,7 @@ imageset = {
 }
 
 class mnist(object):
-    def __init__(self, type='train', batch_size=100, data_path=None):
+    def __init__(self, type='train', batch_size=5000, data_path=None, cfg=None):
 
         self.type = type
         self.batch_size = batch_size
@@ -38,6 +38,10 @@ class mnist(object):
             labels = np.frombuffer(f.read(), np.uint8, offset=8)
 
         return inputs, labels
+
+    def reset(self):
+        self.anchor = 0
+        # TODO: shuffle the dataset
 
     def __iter__(self):
         return self

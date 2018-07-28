@@ -79,19 +79,6 @@ def conv2d_backward(d_out, params):
     return d_inputs, d_weight, d_bias
 
 
-def relu_forward(inputs):
-    return np.maximum(0, inputs), inputs
-
-
-def relu_backward(d_out, params):
-    inputs = params
-    outputs = np.maximum(0, inputs)
-    outputs[d_out > 0] = 1
-    d_out *= outputs
-
-    return d_out
-
-
 def Linear(inputs, weight, bias):
     """
     Computes the forward pass for an affine (fully-connected) layer.
@@ -115,7 +102,7 @@ def Linear(inputs, weight, bias):
     reshaped_inputs = inputs.reshape(batch_size, col_num)
     out = np.dot(reshaped_inputs, weight) + bias
 
-    return out, (inputs, weight, bias)
+    return out, (inputs, reshaped_inputs, weight, bias)
 
 
 def Linear_backward(d_out, params):
@@ -123,7 +110,7 @@ def Linear_backward(d_out, params):
     computes the backward pass for a fc layer.
 
     Inputs:
-    - d_out: Upstream derivative, of shape (N, M)
+    - d_out: Upstream derivative, of shape (batch_size, num_cls)
     - params: Tuple of:
 
     Returns a tuple of:
@@ -131,12 +118,10 @@ def Linear_backward(d_out, params):
     - dw: Gradient with respect to w, of shape (D, M)
     - db: Gradient with respect to b, of shape (M,)
     """
-    inputs, weight, bias = params
-    batch_size = inputs.shape[0]
-    reshaped_inputs = inputs.reshape(batch_size, np.prod(inputs.shape[1:]))
+    inputs, reshaped_inputs, weight, bias = params
 
-    d_inputs = np.dot(d_out, weight.T).reshape(inputs.shape)
     d_weight = np.dot(reshaped_inputs.T, d_out)
+    d_inputs = np.dot(d_out, weight.T).reshape(inputs.shape)
     d_bias = np.sum(d_out, axis=0)
 
     return d_inputs, d_weight, d_bias

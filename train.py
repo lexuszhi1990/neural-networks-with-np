@@ -1,34 +1,23 @@
 # -*- coding: utf-8 -*-
 
 from src.configuration import cfg
-from src.mnist import load_minist
+from src.data_loader import mnist
 from src.resnet import resnet
+from src.mlp import mlp
 import src.optim as optim
 
 
 def train():
 
-    data = load_minist()
-    train_samples = data['training_images']
-    train_labels = data['training_labels']
-    val_samples = data['test_images']
-    val_lables = data['test_labels']
+    dataset = mnist(cfg=cfg)
+    model = mlp()
 
-    model = resnet()
-    # optimizer = optim.SDG(model, base_lr=1e-3)
-
-    import numpy as np
-
-    for i in range(100):
-
-        samples_batch = (np.array(train_samples[i*cfg['batch_size']:(i+1)*cfg['batch_size']]).astype(np.float32))/2.0 - 127.5
-        # samples_batch = np.array(train_samples[i*cfg['batch_size']:(i+1)*cfg['batch_size']]).astype(np.float32) / 255.0
-        labels_batch = train_labels[i*cfg['batch_size']:(i+1)*cfg['batch_size']]
-
-        outputs = model.forward(samples_batch)
-        loss = model.compute_loss(labels_batch)
-        grads = model.backward()
-        # optimizer.step(grads)
+    for epoch in range(cfg['max_epoch']):
+        for index, (inputs, label) in enumerate(dataset):
+            # inputs = inputs/2. - 127.5
+            outputs = model.forward(inputs)
+            loss = model.compute_loss(label)
+            grads = model.backward()
 
 if __name__ == '__main__':
     train()
