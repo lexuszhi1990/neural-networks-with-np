@@ -20,7 +20,7 @@ class mnist(object):
         self.imageset = imageset
         self.batch_size = batch_size
         self.inputs, self.labels = self.load_dataset(data_path)
-        self.max_iteration = len(self.labels) / batch_size
+        self.max_iteration = len(self.labels) // batch_size
         self.anchor = 0
 
     def load_dataset(self, data_path):
@@ -42,6 +42,7 @@ class mnist(object):
         shuffled_ids = [i for i in range(len(self.inputs))]
         self.inputs = self.inputs[shuffled_ids]
         self.labels = self.labels[shuffled_ids]
+        print("shuffle datasets...")
 
     def __iter__(self):
         return self
@@ -49,8 +50,9 @@ class mnist(object):
     def __next__(self):
         inputs_batch = self.inputs[self.anchor*self.batch_size:(self.anchor+1)*self.batch_size].astype(np.float32)
         labels_batch = self.labels[self.anchor*self.batch_size:(self.anchor+1)*self.batch_size]
-
+        self.anchor += 1
         if self.anchor+1 > self.max_iteration:
+            self.reset()
             raise StopIteration();
 
         return inputs_batch, labels_batch
