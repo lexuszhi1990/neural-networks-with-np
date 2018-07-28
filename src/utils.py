@@ -24,5 +24,7 @@ def save_weights(params, path, prefix, epoch):
     with params_path.open('w') as f:
         json.dump(params, f, cls=np_encoder)
 
+    return params_path
+
 def load_weights():
     pass

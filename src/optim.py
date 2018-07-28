@@ -3,7 +3,7 @@
 import numpy as np
 
 
-class SDG(object):
+class SGD(object):
     def __init__(self, model, cfg):
 
         self.model = model
