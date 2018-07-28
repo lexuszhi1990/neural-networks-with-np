@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 
+
+import logging
+import src.optim as optim
+from val import val
 from src.configuration import cfg
 from src.data_loader import mnist
-from src.resnet import resnet
-from src.mlp import mlp
-import src.optim as optim
+from src.symbol.resnet import resnet
+from src.symbol.mlp import mlp
 from src.logger import setup_logger
 from src.utils import check_dir_exists, save_weights, load_weights
-import logging
 
-def train(dataset, model, optimizer, cfg):
-
-    check_dir_exists(cfg['workspace'])
-    setup_logger("%s/training" % cfg['workspace'])
+def train(model, optimizer, dataset, cfg, val_dataset=None):
 
     for epoch in range(cfg['max_epoch']):
         for index, (inputs, label) in enumerate(dataset):
@@ -23,11 +22,18 @@ def train(dataset, model, optimizer, cfg):
 
             logging.info("[%d/%d] train loss: %.4f, reg loss: %.4f, total: %.2f" %(epoch, index, loss, reg_loss, (loss + reg_loss)))
 
-        save_weights(model.params, cfg['workspace'], model.name, epoch)
-        logging.info("save model %s-%d.json" % (model.name, epoch))
+        params_path = save_weights(model.params, cfg['workspace'], model.name, epoch)
+        logging.info("save model at: %s" % (params_path))
+        val(None, model.name, params_path, val_dataset, cfg)
 
 if __name__ == '__main__':
-    dataset = mnist()
+
+    check_dir_exists(cfg['workspace'])
+    setup_logger("%s/training" % cfg['workspace'])
+
+
+    train_dataset = mnist('train', cfg['batch_size'], data_path=cfg['data_path'])
+    val_dataset = mnist('train', cfg['batch_size'], data_path=cfg['data_path'])
     model = mlp()
-    optimizer = optim.SDG(model, cfg)
-    train(dataset, model, optimizer, cfg)
+    optimizer = optim.SGD(model, cfg)
+    train(model, optimizer, train_dataset, cfg, val_dataset)

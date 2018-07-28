@@ -26,5 +26,14 @@ def save_weights(params, path, prefix, epoch):
 
     return params_path
 
-def load_weights():
-    pass
+def load_weights(path):
+    assert Path(path).exists(), "%s not exists" % path
+    with Path(path).open('r') as f:
+        weights = json.load(f)
+
+    return weights
+
+def restore_weights(model, weights):
+    for key in model.params.keys():
+        model.params[key] = weights[key]
+
