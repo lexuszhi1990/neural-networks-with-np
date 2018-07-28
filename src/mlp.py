@@ -34,12 +34,10 @@ class mlp(object):
 
 
     def compute_loss(self, labels_batch):
-        loss, self.d_output = softmax_loss(self.output, labels_batch)
-        print("pure loss is %.4f" % loss)
-        loss += 0.5 * self.reg * (np.sum(self.params['l1_weight'] ** 2) + np.sum(self.params['l2_weight'] ** 2))
-        print("total loss is %.4f" % loss)
+        training_loss, self.d_output = softmax_loss(self.output, labels_batch)
+        reg_loss = 0.5 * self.reg * (np.sum(self.params['l1_weight'] ** 2) + np.sum(self.params['l2_weight'] ** 2))
 
-        return loss
+        return training_loss, reg_loss
 
 
     def backward(self):
@@ -53,10 +51,8 @@ class mlp(object):
         grads['l2_weight'] += self.reg * self.params['l2_weight']
         grads['l1_weight'] += self.reg * self.params['l1_weight']
 
-        # print("l1_weight: %.4f" % np.sum(grads['l1_weight']))
+        return grads
+        # # print("l1_weight: %.4f" % np.sum(grads['l1_weight']))
 
-        aa = self.params['l1_weight']
-        for key, value in self.params.items():
-            self.params[key] = value - 1e-3 * grads[key]
-        bb = self.params['l1_weight']
-        # print(np.sum(aa-bb))
+        # for key, value in self.params.items():
+        #     self.params[key] = value - 1e-3 * grads[key]

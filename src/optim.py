@@ -4,17 +4,15 @@ import numpy as np
 
 
 class SDG(object):
-    def __init__(self, model, base_lr, momentum=None):
+    def __init__(self, model, cfg):
 
         self.model = model
-        self.base_lr = base_lr
-        self.momentum = momentum
+        self.base_lr = cfg['base_lr']
+        self.momentum = cfg['momentum']
 
-        self.lr = base_lr
+        # initialize learning rate
+        self.lr = self.base_lr
 
     def step(self, grads):
-        aa = self.model.params['l1_weight']
         for key, value in self.model.params.items():
             self.model.params[key] = value - self.lr * grads[key]
-        bb = self.model.params['l1_weight']
-        print(np.sum(aa-bb))
