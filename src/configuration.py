@@ -3,6 +3,7 @@ from collections import defaultdict
 cfg = defaultdict(set)
 
 cfg['data_path'] = './data'
+cfg['workspace'] = './ckpt/mlp-v1'
 cfg['batch_size'] = 5000
 cfg['max_epoch'] = 100
 

@@ -9,6 +9,7 @@ class mlp(object):
 
     def __init__(self, num_cls=10, input_shape=(1, 28, 28), reg=0.0,
                  weight_scale=5e-3):
+        self.name = 'mlp'
         self.reg = reg
         self.params = {}
         self.init_params(input_shape, num_cls)
@@ -52,7 +53,4 @@ class mlp(object):
         grads['l1_weight'] += self.reg * self.params['l1_weight']
 
         return grads
-        # # print("l1_weight: %.4f" % np.sum(grads['l1_weight']))
 
-        # for key, value in self.params.items():
-        #     self.params[key] = value - 1e-3 * grads[key]
