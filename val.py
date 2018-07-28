@@ -22,7 +22,7 @@ def val(model, model_name, params_path, dataset):
         pred_num += np.sum(label == results)
         total_num += len(label)
 
-    logging.info("for %s, precision: %.5f" % (dataset.name, pred_num/total_num))
+    logging.info("[%s] precision: %.5f" % (dataset.name, pred_num/total_num))
 
 
 if __name__ == '__main__':
