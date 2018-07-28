@@ -14,15 +14,15 @@ def val(model, model_name, params_path, dataset):
         model = get_symbol(model_name)()
         restore_weights(model, params_path)
 
-    err_num = 0
+    pred_num = 0
     total_num = 0
     for index, (inputs, label) in enumerate(dataset):
         outputs = model.forward(inputs)
         results = outputs.argmax(axis=1)
-        err_num += np.sum(label-results)
+        pred_num += np.sum(label == results)
         total_num += len(label)
 
-    logging.info("for %s, precision: %.5f" % (dataset.name, 1-err_num/total_num))
+    logging.info("for %s, precision: %.5f" % (dataset.name, pred_num/total_num))
 
 
 if __name__ == '__main__':

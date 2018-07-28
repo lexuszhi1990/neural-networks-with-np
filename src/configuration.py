@@ -9,6 +9,6 @@ cfg_list['mlp'] = {
     'max_epoch': 100,
     'milestones': [ i*10 for i in range(1, 100//10) ],
     'gamma': 0.75,
-    'base_lr': 1e-3,
+    'base_lr': 1e-2,
     'momentum': 0.9,
 }

@@ -15,6 +15,8 @@ def train(model, optimizer, scheduler, dataset, cfg, val_dataset=None):
 
     for epoch in range(cfg['max_epoch']):
         for index, (inputs, label) in enumerate(dataset):
+            # inputs = inputs/2. - 127.5
+            inputs = inputs/255.
             outputs = model.forward(inputs)
             loss, reg_loss = model.compute_loss(label)
             grads = model.backward()
