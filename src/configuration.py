@@ -11,4 +11,5 @@ cfg_list['mlp'] = {
     'gamma': 0.75,
     'base_lr': 1e-2,
     'momentum': 0.9,
+    'reg': 1e-3,
 }

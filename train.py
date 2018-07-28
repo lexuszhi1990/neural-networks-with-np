@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
     train_dataset = mnist('train', cfg['batch_size'])
     val_dataset = mnist('test', cfg['batch_size'])
-    model = get_symbol(cfg['symbol'])()
+    model = get_symbol(cfg['symbol'])(reg=cfg['reg'])
     optimizer = optim.SGD(model, cfg)
     scheduler = MultiStepLR(optimizer, cfg['milestones'], cfg['gamma'])
     train(model, optimizer, scheduler, train_dataset, cfg, val_dataset)
