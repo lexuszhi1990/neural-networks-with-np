@@ -36,7 +36,7 @@ def load_weights(path):
 def restore_weights(model, params_path):
     weights = load_weights(params_path)
     for key in model.params.keys():
-        model.params[key] = weights[key]
+        model.params[key] = np.array(weights[key]).astype(np.float32)
 
 def img_preprocess(img):
     return img / 255.

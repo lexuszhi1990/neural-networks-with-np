@@ -21,6 +21,7 @@ class mnist(object):
         self.imageset = imageset
         self.batch_size = batch_size
         self.inputs, self.labels = self.load_dataset(data_path)
+        self.total = len(self.labels)
         self.max_iteration = len(self.labels) // batch_size
         self.anchor = 0
 

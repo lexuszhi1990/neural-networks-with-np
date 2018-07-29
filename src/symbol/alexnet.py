@@ -38,7 +38,6 @@ class alexnet(object):
 
 
     def forward(self, x):
-
         x, self.layer1_params = conv2d(x, self.params['l1_weight'], self.params['l1_bias'], 2, 0)
         x, self.layer1_avt_params = relu_forward(x)
         x, self.layer2_params = conv2d(x, self.params['l2_weight'], self.params['l2_bias'], 2, 1)

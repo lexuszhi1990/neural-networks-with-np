@@ -14,16 +14,17 @@ def val(model, symbol_name, params_path, dataset):
         model = get_symbol(symbol_name)()
         restore_weights(model, params_path)
 
-    pred_num = 0
-    total_num = 0
+    true_nums = 0
     for index, (inputs, label) in enumerate(dataset):
         inputs = img_preprocess(inputs)
         outputs = model.forward(inputs)
         results = outputs.argmax(axis=1)
-        pred_num += np.sum(label == results)
-        total_num += len(label)
 
-    logging.info("[%s] precision: %.5f" % (dataset.name, pred_num/total_num))
+        true_num = np.sum(label == results)
+        true_nums += true_num
+        logging.info("epoch [%d] precision: %.5f" % (index, true_num/len(label)))
+
+    logging.info("[%s] precision: %.5f" % (dataset.name, true_nums/dataset.total))
 
 
 if __name__ == '__main__':
