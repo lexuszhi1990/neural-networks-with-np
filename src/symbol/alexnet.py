@@ -7,15 +7,15 @@ from src.loss import softmax_loss
 
 class alexnet(object):
 
-    def __init__(self, num_cls=10, input_shape=(1, 28, 28), reg=0.0,
+    def __init__(self, num_cls=10, input_dim=1, reg=1e-3,
                  base_channel=32):
         self.name = 'alexnet'
         self.reg = reg
         self.params = {}
-        self.init_params(input_shape, num_cls, base_channel)
+        self.init_params(input_dim, num_cls, base_channel)
 
 
-    def init_params(self, input_shape, num_cls, base_channel):
+    def init_params(self, input_dim, num_cls, base_channel):
         # (3, 28, 28) -> (32, 13, 13)
         self.params['l1_weight'] = np.random.randn(base_channel, input_dim, 4, 4).astype(np.float32) * np.sqrt(2.0/(base_channel*4*4))
         self.params['l1_bias'] = np.zeros(base_channel).astype(np.float32)
@@ -25,7 +25,7 @@ class alexnet(object):
         self.params['l2_bias'] = np.zeros(base_channel*2).astype(np.float32)
 
         # (64, 7, 7) -> (128, 4, 4)
-        self.params['l3_weight'] = np.random.randn(base_channel*4, base_channel, 3, 3).astype(np.float32) * np.sqrt(2.0/(base_channel*4*3*3))
+        self.params['l3_weight'] = np.random.randn(base_channel*4, base_channel*2, 3, 3).astype(np.float32) * np.sqrt(2.0/(base_channel*4*3*3))
         self.params['l3_bias'] = np.zeros(base_channel*4).astype(np.float32)
 
         # (128, 4, 4) -> (1024,)
@@ -54,10 +54,11 @@ class alexnet(object):
 
 
     def compute_loss(self, labels_batch):
-        training_loss, self.d_output = softmax_loss(self.output, labels_batch)
-        reg_loss = 0.5 * self.reg * (np.sum(self.params['l1_weight'] ** 2) + np.sum(self.params['l2_weight'] ** 2))
+        train_loss, self.d_output = softmax_loss(self.output, labels_batch)
+        weights = sum([np.sum(self.params['l%d_weight'%i] ** 2) for i in range(1, 6)])
+        reg_loss = 0.5 * self.reg * weights
 
-        return training_loss, reg_loss
+        return train_loss, reg_loss
 
 
     def backward(self):

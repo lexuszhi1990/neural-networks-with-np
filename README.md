@@ -8,8 +8,9 @@ implemented model:
 
 ### dependencies:
 
-- python3(only tested on python3.6)
+- python3(3.5 or above)
 - numpy(1.15.0 or above)
+- pillow(5.2.0 or above)
 - (optional) matplotlib: visualize results
 - (optional) graphviz: visualize network architecture
 

@@ -20,7 +20,7 @@ cfg_list['alexnet'] = {
     'workspace': './ckpt/alexnet-v1',
     'dataset_name': 'mnist',
     'symbol': 'alexnet',
-    'batch_size': 10000,
+    'batch_size': 100,
     'max_epoch': 100,
     'milestones': [ i*10 for i in range(1, 100//10) ],
     'base_lr': 5e-1,
