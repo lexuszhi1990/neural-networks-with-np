@@ -29,6 +29,7 @@ def train(model, optimizer, scheduler, dataset, cfg, val_dataset=None):
         if val_dataset is not None:
             val(model, model.name, params_path, val_dataset)
 
+
 if __name__ == '__main__':
 
     args = get_args()
