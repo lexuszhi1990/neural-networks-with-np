@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from pathlib import Path
 import numpy as np
+from src.timer import Timer
+from pathlib import Path
 from PIL import Image
 from src.symbol import get_symbol
 from src.args import get_args
@@ -25,15 +26,17 @@ def eval(model, inputs):
     return outputs.argmax(axis=1)[0]
 
 def demo(symbol_name, params_path, img_dir):
-
+    timer = Timer()
     model = get_symbol(symbol_name)()
     restore_weights(model, params_path)
 
     for img_path in Path(img_dir).glob('*.png'):
         img = Image.open(img_path)
         inputs = setup_data(img)
+        timer.tic()
         num = eval(model, inputs)
-        print("the number in image %s is %d" % (img_path, num))
+        costs = timer.toc()
+        print("the number in image %s is %d || forward costs %.4f" % (img_path, num, costs))
 
 
 if __name__ == '__main__':
