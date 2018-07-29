@@ -8,9 +8,9 @@ cfg_list['mlp'] = {
     'symbol': 'mlp',
     'batch_size': 10000,
     'max_epoch': 100,
-    'milestones': [ i*20 for i in range(1, 100//20) ],
+    'milestones': [ i*25 for i in range(1, 100//25) ],
     'base_lr': 5e-1,
-    'gamma': 0.1,
+    'gamma': 0.3,
     'momentum': 0.9,
     'reg': 1e-4,
 }

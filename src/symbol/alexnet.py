@@ -7,33 +7,48 @@ from src.loss import softmax_loss
 
 class alexnet(object):
 
-    def __init__(self, num_cls=10, input_shape=(1, 28, 28), reg=0.0):
+    def __init__(self, num_cls=10, input_shape=(1, 28, 28), reg=0.0,
+                 base_channel=32):
         self.name = 'alexnet'
         self.reg = reg
         self.params = {}
-        self.init_params(input_shape, num_cls)
+        self.init_params(input_shape, num_cls, base_channel)
 
 
-    def init_params(self, input_shape, num_cls):
-        # (1, 28, 28) -> (256, 1)
-        self.params['l1_weight'] = np.random.randn(np.prod(input_shape), 512).astype(np.float32) * np.sqrt(2.0/np.prod(input_shape))
-        self.params['l1_bias'] = np.zeros(512).astype(np.float32)
-        # (1024, 1) -> (2048, 1)
-        self.params['l2_weight'] = np.random.randn(512, 1024).astype(np.float32) * np.sqrt(2.0/512)
-        self.params['l2_bias'] = np.zeros(1024).astype(np.float32)
+    def init_params(self, input_shape, num_cls, base_channel):
+        # (3, 28, 28) -> (32, 13, 13)
+        self.params['l1_weight'] = np.random.randn(base_channel, input_dim, 4, 4).astype(np.float32) * np.sqrt(2.0/(base_channel*4*4))
+        self.params['l1_bias'] = np.zeros(base_channel).astype(np.float32)
+
+        # (32, 13, 13) -> (64, 7, 7)
+        self.params['l2_weight'] = np.random.randn(base_channel*2, base_channel, 3, 3).astype(np.float32) * np.sqrt(2.0/(base_channel*2*3*3))
+        self.params['l2_bias'] = np.zeros(base_channel*2).astype(np.float32)
+
+        # (64, 7, 7) -> (128, 4, 4)
+        self.params['l3_weight'] = np.random.randn(base_channel*4, base_channel, 3, 3).astype(np.float32) * np.sqrt(2.0/(base_channel*4*3*3))
+        self.params['l3_bias'] = np.zeros(base_channel*4).astype(np.float32)
+
+        # (128, 4, 4) -> (1024,)
+        self.params['l4_weight'] = np.random.randn(4*4*(base_channel*4), 1024).astype(np.float32) * np.sqrt(2.0/(4*4*(base_channel*4)))
+        self.params['l4_bias'] = np.zeros(1024).astype(np.float32)
+
         # (1024, 1) -> (10, 1)
-        self.params['l3_weight'] = np.random.randn(1024, num_cls).astype(np.float32) * np.sqrt(2.0/1024)
-        self.params['l3_bias'] = np.zeros(num_cls).astype(np.float32)
+        self.params['l5_weight'] = np.random.randn(1024, num_cls).astype(np.float32) * np.sqrt(2.0/1024)
+        self.params['l5_bias'] = np.zeros(num_cls).astype(np.float32)
+
 
     def forward(self, x):
-        self.layer1_fw_out, self.layer1_params = Linear(x, self.params['l1_weight'], self.params['l1_bias'])
-        self.layer1_avt_out, self.layer1_avt_params = relu_forward(self.layer1_fw_out)
-        # self.layer1_avt_out, self.layer1_avt_params = sigmoid_forward(self.layer1_fw_out)
-        self.layer2_fw_out, self.layer2_params = Linear(self.layer1_avt_out, self.params['l2_weight'], self.params['l2_bias'])
-        self.layer2_avt_out, self.layer2_avt_params = relu_forward(self.layer2_fw_out)
-        self.layer3_fw_out, self.layer3_params = Linear(self.layer2_avt_out, self.params['l3_weight'], self.params['l3_bias'])
 
-        self.output = self.layer3_fw_out
+        x, self.layer1_params = conv2d(x, self.params['l1_weight'], self.params['l1_bias'], 2, 0)
+        x, self.layer1_avt_params = relu_forward(x)
+        x, self.layer2_params = conv2d(x, self.params['l2_weight'], self.params['l2_bias'], 2, 1)
+        x, self.layer2_avt_params = relu_forward(x)
+        x, self.layer3_params = conv2d(x, self.params['l3_weight'], self.params['l3_bias'], 2, 1)
+        x, self.layer3_avt_params = relu_forward(x)
+        x, self.layer4_params = Linear(x, self.params['l4_weight'], self.params['l4_bias'])
+        x, self.layer5_params = Linear(x, self.params['l5_weight'], self.params['l5_bias'])
+
+        self.output = x
 
         return self.output
 
