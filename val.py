@@ -17,6 +17,7 @@ def val(model, symbol_name, params_path, dataset):
     pred_num = 0
     total_num = 0
     for index, (inputs, label) in enumerate(dataset):
+        inputs = img_preprocess(inputs)
         outputs = model.forward(inputs)
         results = outputs.argmax(axis=1)
         pred_num += np.sum(label == results)
