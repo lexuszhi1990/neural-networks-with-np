@@ -7,21 +7,22 @@ from PIL import Image
 from src.symbol import get_symbol
 from src.args import get_args
 
-from src.utils import restore_weights
+from src.utils import restore_weights, img_preprocess
 
 def setup_data(img):
     inputs = np.zeros((1, 1, 28, 28)).astype(np.uint8)
 
     for i in range(img.size[0]):
-        for j in range(img.size[0]):
-            inputs[0, 0, i, j] = img.getpixel((i, j))
+        for j in range(img.size[1]):
+            inputs[0, 0, j, i] = img.getpixel((i, j))
 
     return inputs
 
 def eval(model, inputs):
+    inputs = img_preprocess(inputs)
     outputs = model.forward(inputs)
 
-    return outputs.argmax(axis=1).tolist()[0]
+    return outputs.argmax(axis=1)[0]
 
 def demo(symbol_name, params_path, img_dir):
 

@@ -38,6 +38,9 @@ def restore_weights(model, params_path):
     for key in model.params.keys():
         model.params[key] = weights[key]
 
+def img_preprocess(img):
+    return img / 255.
+
 def transfer_samples(path):
     import cv2
     img = cv2.imread(img_path)

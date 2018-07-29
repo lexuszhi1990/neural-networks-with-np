@@ -13,7 +13,7 @@ def get_args():
 
     # choose ckpt_path for inferences
     parser.add_argument('--symbol_name', default='mlp', type=str, help='symbol name used to initialize mode, [mlp, alexnet]')
-    parser.add_argument('--test_dir', default='./data/samples', type=str, help='test dirs')
+    parser.add_argument('--test_dir', default='./data/samples/mnist-test', type=str, help='test dirs')
 
 
     args = parser.parse_args()

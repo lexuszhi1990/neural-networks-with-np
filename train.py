@@ -9,13 +9,14 @@ from src.args import get_args
 from src.logger import setup_logger
 from src.data_loader import mnist
 from src.configuration import cfg_list
-from src.utils import check_dir_exists, save_weights, load_weights
+from src.utils import check_dir_exists, save_weights, img_preprocess
 
 def train(model, optimizer, scheduler, dataset, cfg, val_dataset=None):
 
     for epoch in range(cfg['max_epoch']):
         for index, (inputs, label) in enumerate(dataset):
-            outputs = model.forward(inputs/255.)
+            inputs = img_preprocess(inputs)
+            outputs = model.forward(inputs)
             loss, reg_loss = model.compute_loss(label)
             grads = model.backward()
             optimizer.step(grads)

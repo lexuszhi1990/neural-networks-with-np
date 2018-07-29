@@ -7,7 +7,7 @@ from src.logger import setup_logger
 from src.configuration import cfg_list
 from src.args import get_args
 from src.data_loader import mnist
-from src.utils import check_dir_exists, restore_weights
+from src.utils import check_dir_exists, restore_weights, img_preprocess
 
 def val(model, symbol_name, params_path, dataset):
     if model is None:
