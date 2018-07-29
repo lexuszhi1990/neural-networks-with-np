@@ -1,5 +1,7 @@
-/env
-/data
+__pycache__
+env
 ckpt
 
-__pycache__
+data/mnist
+data/fashion-mnist
+

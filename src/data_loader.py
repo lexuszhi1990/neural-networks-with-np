@@ -52,12 +52,13 @@ class mnist(object):
         return self
 
     def __next__(self):
-        inputs_batch = self.inputs[self.anchor*self.batch_size:(self.anchor+1)*self.batch_size].astype(np.float32)
-        labels_batch = self.labels[self.anchor*self.batch_size:(self.anchor+1)*self.batch_size]
-        self.anchor += 1
         if self.anchor+1 > self.max_iteration:
             self.reset()
             raise StopIteration();
+
+        inputs_batch = self.inputs[self.anchor*self.batch_size:(self.anchor+1)*self.batch_size].astype(np.float32)
+        labels_batch = self.labels[self.anchor*self.batch_size:(self.anchor+1)*self.batch_size]
+        self.anchor += 1
 
         return inputs_batch, labels_batch
 

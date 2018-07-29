@@ -3,13 +3,28 @@ from collections import defaultdict
 cfg_list = defaultdict(set)
 
 cfg_list['mlp'] = {
-    'workspace': './ckpt/mlp-v2',
+    'workspace': './ckpt/mlp-v5',
+    'dataset_name': 'mnist',
     'symbol': 'mlp',
-    'batch_size': 5000,
+    'batch_size': 10000,
+    'max_epoch': 100,
+    'milestones': [ i*20 for i in range(1, 100//20) ],
+    'base_lr': 5e-1,
+    'gamma': 0.1,
+    'momentum': 0.9,
+    'reg': 1e-4,
+}
+
+
+cfg_list['alexnet'] = {
+    'workspace': './ckpt/alexnet-v1',
+    'dataset_name': 'mnist',
+    'symbol': 'alexnet',
+    'batch_size': 10000,
     'max_epoch': 100,
     'milestones': [ i*10 for i in range(1, 100//10) ],
-    'gamma': 0.75,
-    'base_lr': 1e-2,
+    'base_lr': 5e-1,
+    'gamma': 0.5,
     'momentum': 0.9,
     'reg': 1e-3,
 }

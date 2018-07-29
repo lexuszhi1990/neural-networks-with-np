@@ -15,8 +15,7 @@ def train(model, optimizer, scheduler, dataset, cfg, val_dataset=None):
 
     for epoch in range(cfg['max_epoch']):
         for index, (inputs, label) in enumerate(dataset):
-            inputs = inputs/255.
-            outputs = model.forward(inputs)
+            outputs = model.forward(inputs/255.)
             loss, reg_loss = model.compute_loss(label)
             grads = model.backward()
             optimizer.step(grads)
@@ -30,6 +29,7 @@ def train(model, optimizer, scheduler, dataset, cfg, val_dataset=None):
         if val_dataset is not None:
             val(model, model.name, params_path, val_dataset)
 
+
 if __name__ == '__main__':
 
     args = get_args()
@@ -38,8 +38,8 @@ if __name__ == '__main__':
     check_dir_exists(cfg['workspace'])
     setup_logger("%s/training" % cfg['workspace'])
 
-    train_dataset = mnist('train', cfg['batch_size'])
-    val_dataset = mnist('test', cfg['batch_size'])
+    train_dataset = mnist('train', cfg['batch_size'], name=cfg['dataset_name'])
+    val_dataset = mnist('test', cfg['batch_size'], name=cfg['dataset_name'])
     model = get_symbol(cfg['symbol'])(reg=cfg['reg'])
     optimizer = optim.SGD(model, cfg)
     scheduler = MultiStepLR(optimizer, cfg['milestones'], cfg['gamma'])
