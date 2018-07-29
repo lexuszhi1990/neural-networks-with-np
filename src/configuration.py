@@ -28,3 +28,16 @@ cfg_list['alexnet'] = {
     'momentum': 0.9,
     'reg': 1e-3,
 }
+
+cfg_list['alexnet-fashion'] = {
+    'workspace': './ckpt/alexnet-fashion-v1',
+    'dataset_name': 'fashion-mnist',
+    'symbol': 'alexnet',
+    'batch_size': 200,
+    'max_epoch': 9,
+    'milestones': [ i*3 for i in range(1, 9//3) ],
+    'base_lr': 5e-1,
+    'gamma': 0.3,
+    'momentum': 0.9,
+    'reg': 1e-3,
+}
