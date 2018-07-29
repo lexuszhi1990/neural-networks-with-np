@@ -17,14 +17,14 @@ cfg_list['mlp'] = {
 
 
 cfg_list['alexnet'] = {
-    'workspace': './ckpt/alexnet-v1',
+    'workspace': './ckpt/alexnet-v2',
     'dataset_name': 'mnist',
     'symbol': 'alexnet',
-    'batch_size': 100,
-    'max_epoch': 100,
-    'milestones': [ i*10 for i in range(1, 100//10) ],
+    'batch_size': 200,
+    'max_epoch': 9,
+    'milestones': [ i*3 for i in range(1, 9//3) ],
     'base_lr': 5e-1,
-    'gamma': 0.5,
+    'gamma': 0.3,
     'momentum': 0.9,
     'reg': 1e-3,
 }
