@@ -23,7 +23,7 @@ cfg_list['alexnet'] = {
     'batch_size': 500,
     'max_epoch': 3,
     'milestones': [ i for i in range(1, 3) ],
-    'base_lr': 5e-1,
+    'base_lr': 1e-1,
     'gamma': 0.1,
     'momentum': 0.9,
     'reg': 1e-3,

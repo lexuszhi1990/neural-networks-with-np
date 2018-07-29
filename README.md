@@ -25,11 +25,15 @@ pip3 install -r requirements.txt
 ### results
 
 |model|train_error|test_error|forward_time(ms)|
-|mlp|||3.6
+|mlp|0.0227|0.0301|3.6|
 |alexnet|||
 
 
 ### usage
+
+train:
+
+`python3 train.py --config_id alexnet`
 
 validate:
 

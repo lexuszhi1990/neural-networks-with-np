@@ -35,5 +35,5 @@ if __name__ == '__main__':
     check_dir_exists(cfg['workspace'])
     setup_logger("%s/val" % cfg['workspace'])
 
-    val_dataset = mnist('test', cfg['batch_size'])
+    val_dataset = mnist('train', cfg['batch_size'])
     val(None, cfg['symbol'], args.ckpt_path, val_dataset)
