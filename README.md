@@ -11,8 +11,8 @@ implemented model:
 - python3(3.5 or above)
 - numpy(1.15.0 or above)
 - pillow(5.2.0 or above)
-- (optional) matplotlib: visualize results
-- (optional) graphviz: visualize network architecture
+- (optional) matplotlib: visualize results(TODO)
+- (optional) graphviz: visualize network architecture(TODO)
 
 ### setup env
 
@@ -24,10 +24,20 @@ pip3 install -r requirements.txt
 
 ### results
 
-|model|mnist|fashion-mnist|
-|mlp|||
+|model|train_error|test_error|forward_time(ms)|
+|mlp|||3.6
 |alexnet|||
-|resnet|||
+
+
+### usage
+
+validate:
+
+`python3 val.py --config_id mlp --ckpt_path ckpt/mlp-v4/mlp-99.json`
+
+demo:
+
+`python3 demo.py --symbol_name mlp --ckpt_path ckpt/mlp-v4/mlp-99.json --test_dir data/samples/mnist-test`
 
 ### TODOs
 

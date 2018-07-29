@@ -36,7 +36,8 @@ def demo(symbol_name, params_path, img_dir):
         timer.tic()
         num = eval(model, inputs)
         costs = timer.toc()
-        print("the number in image %s is %d || forward costs %.4f" % (img_path, num, costs))
+        print("the number in image %s is %d || forward costs %.4fs" % (img_path, num, costs))
+    print("average costs: %.4fs" % (timer.average_time))
 
 
 if __name__ == '__main__':
