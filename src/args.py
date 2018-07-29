@@ -11,5 +11,9 @@ def get_args():
     # choose ckpt_path for evaluating
     parser.add_argument('--ckpt_path', default='./data/trained_model/mlp-99.json', type=str, help='params path to load base model')
 
+    # choose ckpt_path for evaluating
+    parser.add_argument('--symbol_name', default='mlp', type=str, help='symbol name used to initialize mode, [mlp, alexnet]')
+
+
     args = parser.parse_args()
     return args

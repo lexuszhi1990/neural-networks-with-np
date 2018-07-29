@@ -63,13 +63,21 @@ class alexnet(object):
     def backward(self):
         grads = {}
 
-        d_layer3, grads['l3_weight'], grads['l3_bias'] = Linear_backward(self.d_output, self.layer3_params)
-        d_layer3_avt = relu_backward(d_layer3, self.layer2_avt_params)
-        d_layer2, grads['l2_weight'], grads['l2_bias'] = Linear_backward(d_layer3_avt, self.layer2_params)
-        d_layer2_avt = relu_backward(d_layer2, self.layer1_avt_params)
-        # d_layer2_avt = sigmoid_backword(d_layer2, self.layer1_avt_params)
-        d_layer1, grads['l1_weight'], grads['l1_bias'] = Linear_backward(d_layer2_avt, self.layer1_params)
+        d_layer5, grads['l5_weight'], grads['l5_bias'] = Linear_backward(self.d_output, self.layer5_params)
+        d_layer4, grads['l4_weight'], grads['l4_bias'] = Linear_backward(d_layer5, self.layer4_params)
 
+        d_layer4_avt = relu_backward(d_layer4, self.layer3_avt_params)
+        d_layer3, grads['l3_weight'], grads['l3_bias'] = conv2d_backward(d_layer4_avt, self.layer3_params)
+
+        d_layer3_avt = relu_backward(d_layer3, self.layer2_avt_params)
+        d_layer2, grads['l2_weight'], grads['l2_bias'] = conv2d_backward(d_layer3_avt, self.layer2_params)
+
+        d_layer2_avt = relu_backward(d_layer2, self.layer1_avt_params)
+        d_layer1, grads['l1_weight'], grads['l1_bias'] = conv2d_backward(d_layer2_avt, self.layer1_params)
+
+        grads['l5_weight'] += self.reg * self.params['l5_weight']
+        grads['l4_weight'] += self.reg * self.params['l4_weight']
+        grads['l3_weight'] += self.reg * self.params['l3_weight']
         grads['l2_weight'] += self.reg * self.params['l2_weight']
         grads['l1_weight'] += self.reg * self.params['l1_weight']
 
