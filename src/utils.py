@@ -38,3 +38,9 @@ def restore_weights(model, params_path):
     for key in model.params.keys():
         model.params[key] = weights[key]
 
+def transfer_samples(path):
+    import cv2
+    img = cv2.imread(img_path)
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    img = cv2.resize(img, (28, 28))
+    cv2.imwrite(img_path.split('/')[-1], img)

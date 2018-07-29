@@ -9,9 +9,9 @@ from src.args import get_args
 from src.data_loader import mnist
 from src.utils import check_dir_exists, restore_weights
 
-def val(model, model_name, params_path, dataset):
+def val(model, symbol_name, params_path, dataset):
     if model is None:
-        model = get_symbol(model_name)()
+        model = get_symbol(symbol_name)()
         restore_weights(model, params_path)
 
     pred_num = 0
