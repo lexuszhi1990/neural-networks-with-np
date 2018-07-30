@@ -1,10 +1,6 @@
 # neural networks implement by numpy
 
-implemented model:
-
-- multiply layer perceptron
-- alexnet
-- resnet
+Implementing varity of Neural Network Algorithms only using Numpy Library.
 
 ### dependencies:
 
@@ -43,7 +39,7 @@ pip3 install -r requirements.txt
 │   │   ├── train-images-idx3-ubyte.gz
 │   │   └── train-labels-idx1-ubyte.gz
 │   ├── samples
-│   │   ├── mnist-by-hand                   # 自己手写的0-9
+│   │   ├── mnist-by-hand                   # 自己手写的0-9，用于实测
 │   │   └── mnist-test                      # 从mnist test里面摘取出来的图片，用于inference
 │   └── trained_models                      # 训练好的模型
 │       ├── mlp-final.json
@@ -54,13 +50,14 @@ pip3 install -r requirements.txt
     ├── configuration.py                    # 定义训练参数
     ├── data_loader.py                      # 加载数据接口
     ├── layer.py                            # 定义NN的layer
-    ├── logger.py
+    ├── logger.py                           # logging封装接口
     ├── loss.py                             # 定义loss函数
     ├── lr_scheduler.py                     # 定义学习率调整函数
     ├── optim.py                            # 定义优化方法
     ├── symbol                              # 模型文件列表
-    │   ├── alexnet.py                      # alexnet
     │   ├── mlp.py                          # multi-layer perceptron
+    │   ├── alexnet.py                      # alexnet
+    │   └── resnet
     ├── timer.py                            # 时间测量封装接口
     └── utils.py
 ```
@@ -97,15 +94,15 @@ N is the batch size.
 
 *mnist* dataset:
 
-|model|train_error|test_error|forward_time(s)|
-|-----|-----------|----------|----------------|
-|mlp|0.0228|0.0301|0.0036|
-|alexnet||0.0201|0.2198|
+|model|test_error|forward_time(s)|
+|-----|----------|---------------|
+|mlp|0.0301|0.0036|
+|alexnet|0.0106|0.2198|
 
 *fashion-mnist* dataset:
-|model|train_precision|test_precision|forward_time(s)|
-|-----|-----------|----------|----------------|
-|alexnet||0.83110|0.2198|
+|model|test_precision|forward_time(s)|
+|-----|--------------|----------------|
+|alexnet|0.83110|0.2198|
 
 ### usage
 
