@@ -96,7 +96,6 @@ N is the batch size.
 |mlp|0.0228|0.0301|0.0036|
 |alexnet||0.0201|0.2198|
 
-
 alenxt 在fashion-mnist的准确率为0.76250
 
 ### 使用方法
