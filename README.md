@@ -100,6 +100,7 @@ N is the batch size.
 |alexnet|0.0106|0.2198|
 
 *fashion-mnist* dataset:
+
 |model|test_precision|forward_time(s)|
 |-----|--------------|----------------|
 |alexnet|0.83110|0.2198|
