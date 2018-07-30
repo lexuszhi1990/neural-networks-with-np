@@ -27,32 +27,32 @@ class mlp(object):
         self.params['l3_bias'] = np.zeros(num_cls).astype(np.float32)
 
     def forward(self, x):
-        self.layer1_fw_out, self.layer1_params = Linear(x, self.params['l1_weight'], self.params['l1_bias'])
-        self.layer1_avt_out, self.layer1_avt_params = relu_forward(self.layer1_fw_out)
-        # self.layer1_avt_out, self.layer1_avt_params = sigmoid_forward(self.layer1_fw_out)
-        self.layer2_fw_out, self.layer2_params = Linear(self.layer1_avt_out, self.params['l2_weight'], self.params['l2_bias'])
-        self.layer2_avt_out, self.layer2_avt_params = relu_forward(self.layer2_fw_out)
-        self.layer3_fw_out, self.layer3_params = Linear(self.layer2_avt_out, self.params['l3_weight'], self.params['l3_bias'])
+        x, self.layer1_params = Linear(x, self.params['l1_weight'], self.params['l1_bias'])
+        x, self.layer1_avt_params = leaky_relu_forward(x)
+        x, self.layer2_params = Linear(x, self.params['l2_weight'], self.params['l2_bias'])
+        x, self.layer2_avt_params = leaky_relu_forward(x)
+        x, self.layer3_params = Linear(x, self.params['l3_weight'], self.params['l3_bias'])
 
-        self.output = self.layer3_fw_out
+        self.output = x
 
         return self.output
 
 
     def compute_loss(self, labels_batch):
-        training_loss, self.d_output = softmax_loss(self.output, labels_batch)
-        reg_loss = 0.5 * self.reg * (np.sum(self.params['l1_weight'] ** 2) + np.sum(self.params['l2_weight'] ** 2) + np.sum(self.params['l3_weight'] ** 2))
+        train_loss, self.d_output = softmax_loss(self.output, labels_batch)
+        weights_reg = sum([np.sum(self.params['l%d_weight'%i] ** 2) for i in range(1, 4)])
+        reg_loss = 0.5 * self.reg * weights_reg
 
-        return training_loss, reg_loss
+        return train_loss, reg_loss
 
 
     def backward(self):
         grads = {}
 
         d_layer3, grads['l3_weight'], grads['l3_bias'] = Linear_backward(self.d_output, self.layer3_params)
-        d_layer3_avt = relu_backward(d_layer3, self.layer2_avt_params)
+        d_layer3_avt = leaky_relu_backward(d_layer3, self.layer2_avt_params)
         d_layer2, grads['l2_weight'], grads['l2_bias'] = Linear_backward(d_layer3_avt, self.layer2_params)
-        d_layer2_avt = relu_backward(d_layer2, self.layer1_avt_params)
+        d_layer2_avt = leaky_relu_backward(d_layer2, self.layer1_avt_params)
         # d_layer2_avt = sigmoid_backword(d_layer2, self.layer1_avt_params)
         d_layer1, grads['l1_weight'], grads['l1_bias'] = Linear_backward(d_layer2_avt, self.layer1_params)
 

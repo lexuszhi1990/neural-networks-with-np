@@ -40,12 +40,17 @@ def d_arctan(x):
 def relu_forward(inputs):
     return relu(inputs), inputs
 
-def relu_backward(d_out, inputs):
-    return d_out * d_relu(inputs)
+def relu_backward(d_out, params):
+    return d_out * d_relu(params)
 
+def leaky_relu_forward(inputs):
+    return leaky_relu(inputs), inputs
+
+def leaky_relu_backward(d_out, params):
+    return d_out * d_leaky_relu(params)
 
 def sigmoid_forward(inputs):
     return sigmoid(inputs), inputs
 
-def sigmoid_backword(d_out, inputs):
-    return d_out * d_sigmoid(inputs)
+def sigmoid_backword(d_out, params):
+    return d_out * d_sigmoid(params)

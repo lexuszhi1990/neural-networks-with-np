@@ -54,8 +54,8 @@ class alexnet(object):
 
     def compute_loss(self, labels_batch):
         train_loss, self.d_output = softmax_loss(self.output, labels_batch)
-        weights = sum([np.sum(self.params['l%d_weight'%i] ** 2) for i in range(1, 6)])
-        reg_loss = 0.5 * self.reg * weights
+        weights_reg = sum([np.sum(self.params['l%d_weight'%i] ** 2) for i in range(1, 6)])
+        reg_loss = 0.5 * self.reg * weights_reg
 
         return train_loss, reg_loss
 
