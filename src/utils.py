@@ -43,12 +43,19 @@ def restore_weights(model, params_path):
 def img_preprocess(img):
     return img / 255.
 
-def transfer_samples(path):
+def transfer_samples(img_path):
     import cv2
-    img = cv2.imread(img_path)
-    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    img = cv2.bitwise_not(img)
+    img = cv2.dilate(img, np.ones((3,3),np.uint8), iterations=1)
+    threshold = 125
+    img[img<threshold] = 0
+    img[img>threshold] = img[img>threshold]* 1.25
+    img[img>255] = 255
+    img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, np.ones((5,5),np.uint8))
     img = cv2.resize(img, (28, 28))
     cv2.imwrite(img_path.split('/')[-1], img)
+
 
 def cal_precision(inputs, label):
     assert len(inputs) == len(label), "predicts and lable dont match"
@@ -70,3 +77,7 @@ def draw_loss_graph(path, training_loss, test_loss=[]):
     ax.set_ylim([0, 1])
     plt.legend(loc="lower right")
     plt.savefig(path)
+
+
+if __name__ == '__main__':
+    [transfer_samples("../img%d.png" % i) for i in range(10)]
