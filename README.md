@@ -11,7 +11,7 @@ implemented model:
 - python3(3.5 or above)
 - numpy(1.15.0 or above)
 - pillow(5.2.0 or above)
-- (optional) matplotlib: visualize results(TODO)
+- (optional) matplotlib: visualize results
 - (optional) graphviz: visualize network architecture(TODO)
 
 ### setup env
@@ -95,12 +95,17 @@ N is the batch size.
 
 ### results
 
+*mnist* dataset:
+
 |model|train_error|test_error|forward_time(s)|
 |-----|-----------|----------|----------------|
 |mlp|0.0228|0.0301|0.0036|
 |alexnet||0.0201|0.2198|
 
-alenxt 在fashion-mnist的准确率为0.76250
+*fashion-mnist* dataset:
+|model|train_precision|test_precision|forward_time(s)|
+|-----|-----------|----------|----------------|
+|alexnet||0.83110|0.2198|
 
 ### usage
 
@@ -114,16 +119,18 @@ alexnet: `python3 train.py --config_id alexnet`
 
 mlp: `python3 val.py`
 
-alexnet:
-`python3 val.py --config_id alexnet --ckpt_path data/trained_models/alexnet-final.json`
+alexnet: `python3 val.py --config_id alexnet --ckpt_path data/trained_models/alexnet-final.json`
 
 *inference*:
 
 mlp: `python3 demo.py`
 
 alexnet: `python3 demo.py --symbol_name alexnet --ckpt_path data/trained_models/alexnet-final.json`
+
 ### TODOs
 
+- [x] visualize training loss and validation loss
+- [ ] implement resnet
 - [ ] data augmentation
 
 ### references
