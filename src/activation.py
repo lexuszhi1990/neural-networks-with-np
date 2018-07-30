@@ -17,12 +17,16 @@ def d_tanh(x):
     return 1 - np.tanh(x) ** 2
 
 def relu(x):
-    mask = (x > 0) * 1.0
-    return mask * x
+    return x * (x > 0) * 1.0
 
 def d_relu(x):
-    mask = (x > 0) * 1.0
-    return mask
+    return (x > 0) * 1.0
+
+def leaky_relu(x, alpha=0.2):
+    return np.where(x > 0, x, alpha * x)
+
+def d_leaky_relu(x, alpha=0.2):
+    return np.where(x > 0, 1., alpha)
 
 def arctan(x):
     return np.arctan(x)
@@ -36,16 +40,12 @@ def d_arctan(x):
 def relu_forward(inputs):
     return relu(inputs), inputs
 
-def relu_backward(d_out, params):
-    # outputs = np.maximum(0, inputs)
-    # outputs[outputs > 0] = 1
-    inputs = params
+def relu_backward(d_out, inputs):
     return d_out * d_relu(inputs)
 
 
 def sigmoid_forward(inputs):
     return sigmoid(inputs), inputs
 
-def sigmoid_backword(d_out, params):
-    inputs = params
+def sigmoid_backword(d_out, inputs):
     return d_out * d_sigmoid(inputs)
