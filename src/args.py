@@ -9,7 +9,7 @@ def get_args():
     parser.add_argument('--config_id', default='mlp', type=str, help='config ID')
 
     # choose ckpt_path for evaluating
-    parser.add_argument('--ckpt_path', default='./data/trained_models/mlp-v3-0.95290.json', type=str, help='params path to load base model')
+    parser.add_argument('--ckpt_path', default='./data/trained_models/mlp-final.json', type=str, help='params path to load base model')
 
     # choose ckpt_path for inferences
     parser.add_argument('--symbol_name', default='mlp', type=str, help='symbol name used to initialize mode, [mlp, alexnet]')
