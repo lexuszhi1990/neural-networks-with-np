@@ -2,7 +2,7 @@
 
 implemented model:
 
-- multiply layer perception
+- multiply layer perceptron
 - alexnet
 - resnet
 
@@ -67,7 +67,7 @@ pip3 install -r requirements.txt
 
 ### model architecture
 
-#### multi-layer perception:
+#### multi-layer perceptron:
 
 |layer|params|outputs|inputs|
 |-----|------|------|-------|
@@ -121,3 +121,6 @@ demo:
 ### TODOs
 
 - [ ] data augmentation
+
+### inferences
+
