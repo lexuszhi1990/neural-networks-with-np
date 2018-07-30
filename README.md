@@ -122,5 +122,8 @@ demo:
 
 - [ ] data augmentation
 
-### inferences
+### references
 
+- LeCun, Yann, Corinna Cortes, and C. J. Burges. "MNIST handwritten digit database."
+- Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E. Hinton. "Imagenet classification with deep convolutional neural networks." Advances in neural information processing systems. 2012.
+- Glorot X, Bengio Y. Understanding the difficulty of training deep feedforward neural networks[J]. Journal of Machine Learning Research, 2010, 9:249-256.

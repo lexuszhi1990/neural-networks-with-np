@@ -82,35 +82,41 @@ pip3 install -r requirements.txt
 |relu||||(N, 32, 13, 13)|(N, 32, 13, 13)|
 |layer2(conv)|(64, 32, 3, 3)|(1, 1)|2|(N, 64, 7, 7)|(N, 32, 13, 13)|
 |relu||||(N, 64, 7, 7)|(N, 64, 7, 7)|
-|relu||||(N, 64, 7, 7)|(N, 64, 7, 7)|
 |layer3(conv)|(128, 64, 3, 3)|(1, 1)|2|(N, 128, 4, 4)|(N, 64, 7, 7)|
 |relu||||(N, 128, 4, 4)|(N, 128, 4, 4)|
-|fc|(128x4x4, 1024)|||(N, 1024)|(N, 128x4x4)|
-|fc|(1024, 10)|||(N, 10)|(N, 1024)|
+|fc1|(128x4x4, 1024)|||(N, 1024)|(N, 128x4x4)|
+|fc2|(1024, 10)|||(N, 10)|(N, 1024)|
 
 N is the batch size.
 
 ### 实验结果
 
-|model|train_error|test_error|forward_time(ms)|
+|model|train_error|test_error|forward_time(s)|
 |-----|-----------|----------|----------------|
-|mlp|0.0228|0.0301|3.6|
-|alexnet||0.0201|
+|mlp|0.0228|0.0301|0.0036|
+|alexnet||0.0201|0.2198|
 
 
 ### 使用方法
 
-训练:
+*训练*:
+
 mlp: `python3 train.py`
+
 alexnet: `python3 train.py --config_id alexnet`
 
-测试:
-mlp: `python3 val.py`
-alexnet: `python3 val.py --config_id alexnet --ckpt_path ckpt/alexnet-v2/alexnet-3.json`
+*测试*:
 
-inference:
+mlp: `python3 val.py`
+
+alexnet:
+`python3 val.py --config_id alexnet --ckpt_path data/trained_models/alexnet-final.json`
+
+*inference*:
+
 mlp: `python3 demo.py`
-alexnet: `python3 demo.py --symbol_name alexnet --ckpt_path ckpt/mlp-v4/mlp-99.json --test_dir data/samples/mnist-test`
+
+alexnet: `python3 demo.py --symbol_name alexnet --ckpt_path data/trained_models/alexnet-final.json`
 
 ### 参考资料
 
