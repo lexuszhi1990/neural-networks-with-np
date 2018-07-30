@@ -7,10 +7,10 @@ cfg_list['mlp'] = {
     'dataset_name': 'mnist',
     'symbol': 'mlp',
     'batch_size': 10000,
-    'max_epoch': 100,
+    'max_epoch': 4,
     'milestones': [ i*25 for i in range(1, 100//25) ],
     'base_lr': 5e-1,
-    'gamma': 0.3,
+    'gamma': 0.2,
     'momentum': 0.9,
     'reg': 1e-4,
 }
