@@ -3,7 +3,7 @@ from collections import defaultdict
 cfg_list = defaultdict(set)
 
 cfg_list['mlp'] = {
-    'workspace': './ckpt/mlp-v5',
+    'workspace': './ckpt/mlp-v6',
     'dataset_name': 'mnist',
     'symbol': 'mlp',
     'batch_size': 10000,
