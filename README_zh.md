@@ -119,6 +119,12 @@ mlp: `python3 demo.py`
 
 alexnet: `python3 demo.py --symbol_name alexnet --ckpt_path data/trained_models/alexnet-final.json`
 
+### method test
+
+```
+python3 -m unittest tests/activation_test.py
+```
+
 ### 参考资料
 
 - LeCun, Yann, Corinna Cortes, and C. J. Burges. "MNIST handwritten digit database."
