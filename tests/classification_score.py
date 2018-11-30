@@ -113,5 +113,3 @@ print('Micro F1 (sklearn):',metrics.f1_score(y_true, y_pred, average='micro'))
 print('Macro F1 (sklearn):',metrics.f1_score(y_true, y_pred, average='macro'))
 print('Micro F1 (own)    :',f1_micro(y_true, y_pred))
 print('Macro F1 (own)    :',f1_macro(y_true, y_pred))
-
-
